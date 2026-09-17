@@ -4,7 +4,7 @@ import os
 import pygame
 from config import ASSETS_DIR, DOODLE_SIZE, DOODLE_START_X, DOODLE_START_Y, LIVES, doodle_dict
 
-# Chargement et redimensionnement des images du Doodle (gauche et droite)
+# Chargement et redimensionnement des images du Doodle (gauche et droite) g
 doodle_left_img = pygame.image.load(os.path.join(ASSETS_DIR, "doodle_left.png"))
 doodle_left_img = pygame.transform.scale(doodle_left_img, DOODLE_SIZE)
 
