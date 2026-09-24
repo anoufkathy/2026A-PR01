@@ -61,6 +61,11 @@ def move_platforms():
     # bleues encore actives. Elles doivent rester dans la fenêtre en inversant
     # leur vitesse lorsqu'elles atteignent un bord.
 
+    for platform in PLATFORMS: # on parcourt toutes les plateformes stockées
+        if platform["type"] == "blue" and platform["active"]: # on veut seulement toucher aux plateformes bleues
+            platform["x"] +=platform["vx"] # fait avancer la plateforme d'un petit pas horizontal à chaque image du jeu.
+            if platform["x"] <= 0 or platform["x"] + platform["width"] >= SCREEN_WIDTH:
+                platform["vx"] = -platform["vx"] # Pour chacune, on la déplace de vx, puis on regarde si elle a touché un bord. Si oui, on inverse vx (positif devient négatif et inversement), et elle repart dans l'autre sens
     return
 
 # ===========================================================
