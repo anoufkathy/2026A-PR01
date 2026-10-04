@@ -31,11 +31,14 @@ def generate_initial_platforms():
     start_platform = create_platform(
         DOODLE_START_X + (DOODLE_WIDTH - PLATFORM_WIDTH) // 2,
         DOODLE_START_Y + 70,
-        "green"
+        "green"                                                                 
     )
     PLATFORMS.append(start_platform)
 
-    current_y = DOODLE_START_Y + 70 - random.randint(MIN_PLATFORM_GAP, MAX_PLATFORM_GAP)
+    current_y = DOODLE_START_Y + 70 - random.randint(MIN_PLATFORM_GAP, MAX_PLATFORM_GAP) # la plateforme de départ est à DOODLE_START_Y + 70. 
+    
+
+
 
     # ======================== PARTIE 2.2 ========================
     # TODO : Ajoutez des plateformes jusqu'à ce que la partie supérieure
@@ -45,6 +48,12 @@ def generate_initial_platforms():
     # horizontale valide, choisir un type avec choose_platform_type(...),
     # ajouter la plateforme à PLATFORMS et calculer la hauteur de la suivante.
     # Les probabilités à utiliser sont données dans le README.
+    while current_y > 0:  # la boucle continue tant que la hauteur de la prochaine plateforme est encore dans l'écran. Quand current_y devient négatif ou nul, on a dépassé le haut de la fenêtre, donc on arrête.
+        x = random.randint(0, SCREEN_WIDTH - PLATFORM_WIDTH) # choisit une position horizontale au hasard. Le maximum est SCREEN_WIDTH - PLATFORM_WIDTH parce que x est le bord gauche de la plateforme
+        platform_type = choose_platform_type(0.65, 0.17, 0.10) # probabilités données dan README
+        PLATFORMS.append(create_platform(x, current_y, platform_type)) # ajoute la platforme à PLATEFORMS 
+        current_y -= random.randint(MIN_PLATFORM_GAP, MAX_PLATFORM_GAP) # pour savoir ou se retrouve la prochaine plateforme, permet de stocker
+    
 
     return
     # ===========================================================

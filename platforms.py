@@ -40,15 +40,15 @@ def create_platform(x, y, platform_type="green"):
     platform = {
         "x": float(x),
         "y": float(y),
-        "type": "green",                    # TODO
-        "image": platform_images["green"],  # TODO
-        "vx": 0.0,                          # TODO
-        "active": True,
-        "width": PLATFORM_SIZE[0],
-        "height": PLATFORM_SIZE[1]           # TODO
+        "type": platform_type,              # TODO(Fait) #permet de recevoir n'importe quel type de plateforme(green, blue, brown, spring)
+        "image": platform_images[platform_type],  # TODO(Fait) #on va chercher l'image correspondante dans le dictionnaire platform_images)
+        "vx": MOVING_PLATFORM_SPEED if platform_type=="blue" else 0.0,                          # TODO (fait) # vx est la vitesse horizontale de la plateforme. Pour les plateformes bleues, elle doit être égale à MOVING_PLATFORM_SPEED, et pour les autres plateformes, elle doit être égale à 0.
+        "active": True,                     #on ne change pas 
+        "width": PLATFORM_SIZE[0],          # le width reste pareille pour toutes les plateformes
+        "height": PLATFORM_SIZE[1] + 10 if platform_type=="spring" else PLATFORM_SIZE[1],         # TODO(fait) # condition que la platefome à ressort à 10 pixels de plus en hauteur
     }
 
-    # TODO : Modifiez le dictionnaire ci-dessus pour qu'il dépende réellement
+    # TODO(fait): Modifiez le dictionnaire ci-dessus pour qu'il dépende réellement
     # de l'argument platform_type.
     #
     # Contraintes :
@@ -70,16 +70,27 @@ def choose_platform_type(green_probability, blue_probability, spring_probability
     Les trois paramètres donnent les probabilités respectives des plateformes
     verte, bleue et à ressort. La probabilité restante correspond à une
     plateforme marron.
-    """
+    """ 
+    r=random.random()                  # addition cumulatif--> permet de faire aussi de intervalles 
+    if r < green_probability:
+        return "green"
+    elif r < green_probability+ blue_probability:
+        return "blue"
+    elif r < green_probability+ blue_probability+ spring_probability:
+        return "spring"
+    else :
+        return "brown"
+   
 
-    # TODO : Utilisez random.random() et les probabilités reçues en paramètres
+    # TODO(fait) : Utilisez random.random() et les probabilités reçues en paramètres
     # pour retourner l'une des chaînes suivantes :
     # "green", "blue", "spring" ou "brown".
     #
     # Attention : les seuils utilisés avec random.random() doivent être
     # cumulatifs.
 
-    return "green"  # Valeur temporaire à remplacer
+      
+      
 
 # ===========================================================
 
