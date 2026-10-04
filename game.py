@@ -39,10 +39,29 @@ def move_doodle():
     # simultanément la direction et l'image du Doodle.
 
 
+    # Déplacement vers la gauche
+    if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        doodle_dict["x"] -= DOODLE_SPEED
+        doodle_dict["direction"] = "left"
+        doodle_dict["image"] = doodle_left_img
+
+    # Déplacement vers la droite
+    elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        doodle_dict["x"] += DOODLE_SPEED
+        doodle_dict["direction"] = "right"
+        doodle_dict["image"] = doodle_right_img
+
+
+
 
     # TODO : Implémentez le Screen Wrap pour qu'une partie du Doodle puisse
     # sortir d'un côté avant de réapparaître de l'autre.
     # N'utilisez pas de dimensions numériques écrites directement.
+
+    if doodle_dict["x"] < -DOODLE_WIDTH:
+        doodle_dict["x"] = SCREEN_WIDTH
+    elif doodle_dict["x"] > SCREEN_WIDTH:
+        doodle_dict["x"] = -DOODLE_WIDTH
 
 
 
@@ -106,6 +125,25 @@ def scroll_camera():
     # meilleur score doit être mis à jour. Les plateformes sorties sous
     # l'écran doivent être retirées, puis de nouvelles plateformes générées.
 
+    if doodle_dict["y"] < CAMERA_SCROLL_THRESHOLD:
+
+        # Calcul de la distance de défilement
+        scroll_distance = CAMERA_SCROLL_THRESHOLD - doodle_dict["y"]
+
+        # Maintenir le Doodle au seuil de la caméra
+        doodle_dict["y"] = CAMERA_SCROLL_THRESHOLD
+
+        # Déplacer toutes les plateformes vers le bas
+        for platform in PLATFORMS:
+            platform["y"] += scroll_distance
+
+        # Augmenter le score selon la distance parcourue
+        doodle_dict["score"] += scroll_distance
+
+        # Mettre à jour le meilleur score
+        if doodle_dict["score"] > doodle_dict["high_score"]:
+            doodle_dict["high_score"] = doodle_dict["score"]
+
     return
 
 # ===========================================================
@@ -123,6 +161,43 @@ def generate_new_platforms():
     # Vous devrez partir de la plateforme actuellement la plus haute et
     # continuer à ajouter des plateformes tant que nécessaire. Utilisez
     # choose_platform_type(...) avec les probabilités indiquées dans le README.
+
+
+    # Si la liste est vide, créer une plateforme de départ
+    if not PLATFORMS:
+        x = random.randint(0, SCREEN_WIDTH - PLATFORM_WIDTH)
+        y = SCREEN_HEIGHT - MIN_PLATFORM_GAP
+
+        platform_type = choose_platform_type(0.55, 0.20, 0.13)
+
+        PLATFORMS.append(
+            create_platform(x, y, platform_type)
+        )
+
+    # Trouver la plateforme actuellement la plus haute
+    highest_platform = min(PLATFORMS, key=lambda platform: platform["y"])
+
+    current_y = highest_platform["y"]
+
+    # Ajouter des plateformes jusqu'à ce que la partie supérieure
+    # de l'écran soit suffisamment remplie
+    while current_y > -MAX_PLATFORM_GAP:
+
+        gap = random.randint(MIN_PLATFORM_GAP, MAX_PLATFORM_GAP)
+
+        current_y -= gap
+
+        x = random.randint(0, SCREEN_WIDTH - PLATFORM_WIDTH)
+
+        platform_type = choose_platform_type(0.55, 0.20, 0.13)
+
+        new_platform = create_platform(
+            x,
+            current_y,
+            platform_type
+        )
+
+        PLATFORMS.append(new_platform)
 
     return
 
