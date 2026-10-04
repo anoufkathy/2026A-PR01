@@ -37,17 +37,17 @@ def move_doodle():
     """
     keys = pygame.key.get_pressed()
 
-    # TODO : Gérez les déplacements gauche/droite et mettez à jour
+    # TODO(fait) : Gérez les déplacements gauche/droite et mettez à jour
     # simultanément la direction et l'image du Doodle.
 
 
-    # Déplacement vers la gauche
+    # DÉPLACEMENT GAUCHE
     if keys[pygame.K_LEFT] or keys[pygame.K_a]:
         doodle_dict["x"] -= DOODLE_SPEED
         doodle_dict["direction"] = "left"
         doodle_dict["image"] = doodle_left_img
 
-    # Déplacement vers la droite
+    # DÉPLACEMENT DROIT
     elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
         doodle_dict["x"] += DOODLE_SPEED
         doodle_dict["direction"] = "right"
